@@ -14,6 +14,14 @@ public class Template {
     }
 
 
+    public static String printArr(int [] arr) {
+        StringBuilder s = new StringBuilder();
+        for (int i : arr) {
+            s.append(i);
+            s.append(" ");
+        }
+        return s.toString();
+    }
 
     public String doubleToInt(double b) {
         String s = String.format("%.0f", b);
@@ -41,6 +49,14 @@ public class Template {
             for (int i=0; i<n; i++) a[i]=nextInt();
             return a;
         }
+
+
+        double [] readAsDouble(int n) {
+            double [] a = new double[n];
+            for (int i=0; i<n; i++) a[i]=(double) nextInt();
+            return a;
+        }
+
         long nextLong() {
             return Long.parseLong(next());
         }
