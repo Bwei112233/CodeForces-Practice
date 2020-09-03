@@ -64,6 +64,58 @@ public class Template {
 }
 
 
+class UnionFind {
+    public int size;
+    public int numGroups;
+    public int [] parent;
+    public int [] groupSize;
+
+    public UnionFind(int vertices) {
+        size = vertices;
+        numGroups = vertices;
+        parent = new int[vertices];
+        groupSize = new int[vertices];
+
+        for (int i = 0; i < vertices; i++) {
+            parent[i] = i;
+            groupSize[i] = 1;
+        }
+    }
+
+
+    public int find(int vertex) {
+        if (parent[vertex] == vertex) {
+            return vertex;
+        } else {
+            int cur_parent = parent[vertex];
+            int root = find(cur_parent);
+            parent[vertex] = root;
+            return root;
+        }
+    }
+
+
+    public void union(int v1, int v2) {
+        int root1 = find(v1), root2 = find(v2);
+        if (root1 != root2) {
+            if (groupSize[root1] > groupSize[root2]) {
+                parent[root2] = root1;
+                groupSize[root1] += groupSize[root2];
+            } else {
+                parent[root1] = root2;
+                groupSize[root2] += groupSize[root1];
+            }
+            numGroups--;
+        }
+    }
+
+
+    public boolean connected(int v1, int v2) {
+        return find(v1) == find(v2);
+    }
+
+}
+
 
 
 
