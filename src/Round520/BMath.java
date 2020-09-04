@@ -1,16 +1,67 @@
+package Round520;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class Template {
+public class BMath {
 
     public static void main(String [] args) {
         final FastScanner scanner = new FastScanner();
-        int t = scanner.nextInt();
-        for (int a = 0; a < t; a++) {
+        int n = scanner.nextInt();
+        System.out.println(solve(n));
+    }
 
+
+
+    static String solve(int n) {
+
+        if (n == 1) {
+            return "1 0";
         }
+
+        int maxCount = 0;
+        int curCount = 0;
+        while (n % 2 == 0) {
+            n = n / 2;
+            maxCount++;
+        }
+
+        HashMap<Integer, Integer> primeMap = new HashMap<>();
+        if (maxCount != 0) primeMap.put(2, maxCount);
+
+
+        for (int i = 3; i <= n; i +=2) {
+            while (n % i == 0) {
+                n = n / i;
+                curCount++;
+            }
+            if (curCount > 0) primeMap.put(i, curCount);
+            maxCount = Math.max(maxCount, curCount);
+            curCount = 0;
+        }
+
+        int smallestNum = 1;
+
+        boolean needMult = false;
+        int last = -1;
+        for (Integer prime : primeMap.keySet()) {
+            if (last == -1) last = primeMap.get(prime);
+            smallestNum *= prime;
+            if (primeMap.get(prime) != last) needMult = true;
+        }
+
+        int sqrtNeeded = 0;
+        int start = 1;
+        while (start < maxCount) {
+            sqrtNeeded ++;
+            start *= 2;
+        }
+
+        int sol = (needMult || start != maxCount) ? sqrtNeeded + 1 : sqrtNeeded;
+        return smallestNum + " " + sol;
     }
 
 

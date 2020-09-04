@@ -1,17 +1,88 @@
+package Round520;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-public class Template {
+public class Banhmi {
+
+    static int [][] memo;
+    static int [] ones;
 
     public static void main(String [] args) {
         final FastScanner scanner = new FastScanner();
-        int t = scanner.nextInt();
-        for (int a = 0; a < t; a++) {
+        int n = scanner.nextInt(), q = scanner.nextInt();
+        char [] arr = scanner.next().toCharArray();
 
+
+//        memo = new int[n + 1][n + 1];
+        ones = new int[n];
+        if (arr[0] == '1') {
+            ones[0] = 1;
+        }
+
+
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] == '1') {
+                ones[i] = ones[i - 1] + 1;
+            } else {
+                ones[i] = ones[i - 1];
+            }
+        }
+
+
+//
+//        Arrays.fill(memo, -1);
+
+
+
+        for (int a = 0; a < q; a++) {
+            int start = scanner.nextInt(), end = scanner.nextInt();
+            System.out.println(solve(arr, start, end));
         }
     }
+
+
+    static int solve(char [] arr, int start, int end) {
+        int numOnes = 0;
+        int numZeros = 0;
+
+        if (start == 1) {
+            numOnes = ones[end - 1];
+            numZeros = (end - start + 1) - numOnes;
+        } else {
+            numOnes = ones[end - 1] - ones[start - 2];
+            numZeros = (end - start + 1) - numOnes;
+        }
+
+
+//        System.out.println("number of zeros is " + numZeros);
+//        System.out.println("number of ones is " + numOnes);
+
+        if (numOnes == 0) {
+            return 0;
+        }
+
+        double total = 0;
+        double zerosStart = (1 << numOnes) - 1;
+        double y = ((double)(1 << numZeros) - 1);
+        total += (1 << numOnes) - 1;
+        total += zerosStart * y;
+
+        return (int) (total % 1000000007);
+    }
+
+
+
+
+
+
+
+
+
 
 
     public static String printArr(int [] arr) {
@@ -114,10 +185,3 @@ public class Template {
 
     }
 }
-
-
-
-
-
-
-
